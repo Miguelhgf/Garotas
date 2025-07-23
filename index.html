@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Início • Namoro App</title>
+  <!-- Fonte moderna -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff6ec4, #7873f5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+    }
+    .container {
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      overflow: hidden;
+      max-width: 400px;
+      width: 100%;
+      transition: transform 0.3s ease;
+    }
+    .container:hover {
+      transform: translateY(-5px);
+    }
+    .tab {
+      display: flex;
+    }
+    .tab button {
+      flex: 1;
+      padding: 16px;
+      background: transparent;
+      border: none;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s;
+      color: #555;
+    }
+    .tab button.active {
+      background: rgba(255,255,255,0.4);
+      color: #222;
+    }
+    .card {
+      padding: 32px 24px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-weight: 600;
+      color: #444;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    input[type="email"],
+    input[type="password"],
+    input[type="text"],
+    input[type="date"],
+    input[type="file"] {
+      margin-top: 8px;
+      padding: 12px 16px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.8);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+      transition: box-shadow 0.3s, background 0.3s;
+    }
+    input:focus {
+      outline: none;
+      background: rgba(255,255,255,1);
+      box-shadow: 0 0 0 3px rgba(120,115,245,0.3);
+    }
+    .preview {
+      margin-top: 12px;
+      text-align: center;
+    }
+    .preview img {
+      max-width: 100px;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    button[type="submit"] {
+      margin-top: 24px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #ff6ec4, #7873f5);
+      color: #fff;
+      cursor: pointer;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    button[type="submit"]:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    .link {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    .link a {
+      color: #6515cf;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .link a:hover {
+      color: #6511d3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="tab">
+      <button id="tab-login" class="active">Entrar</button>
+      <button id="tab-register">Cadastrar</button>
+    </div>
+    <!-- Login -->
+    <div class="card" id="login-view">
+      <h2>Bem‑Vindo de Volta</h2>
+      <form id="login-form">
+        <label for="login-email">E‑mail</label>
+        <input type="email" id="login-email" required placeholder="seu@email.com"/>
+        <label for="login-password">Senha</label>
+        <input type="password" id="login-password" required placeholder="••••••••"/>
+        <button type="submit">Entrar</button>
+      </form>
+      <div class="link">
+        Ainda não tem conta? <a id="to-register">Cadastre‑se</a>
+      </div>
+    </div>
+    <!-- Cadastro -->
+    <div class="card" id="register-view" style="display:none">
+      <h2>Crie Sua Conta</h2>
+      <form id="register-form">
+        <label for="reg-name">Nome</label>
+        <input type="text" id="reg-name" required placeholder="Seu nome"/>
+        <label for="reg-birth">Data de Nascimento</label>
+        <input type="date" id="reg-birth" required/>
+        <label for="reg-email">E‑mail</label>
+        <input type="email" id="reg-email" required placeholder="seu@email.com"/>
+        <label for="reg-password">Senha</label>
+        <input type="password" id="reg-password" required placeholder="••••••••"/>
+        <label for="reg-photo">Foto de Perfil</label>
+        <input type="file" id="reg-photo" accept="image/png, image/jpeg" required/>
+        <div class="preview" id="photo-preview"></div>
+        <button type="submit">Cadastrar</button>
+      </form>
+      <div class="link">
+        Já tem conta? <a id="to-login">Entrar</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tabLogin     = document.getElementById('tab-login');
+    const tabRegister  = document.getElementById('tab-register');
+    const loginView    = document.getElementById('login-view');
+    const registerView = document.getElementById('register-view');
+    const toRegister   = document.getElementById('to-register');
+    const toLogin      = document.getElementById('to-login');
+    const loginForm    = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const photoInput   = document.getElementById('reg-photo');
+    const photoPreview = document.getElementById('photo-preview');
+    const birthInput   = document.getElementById('reg-birth');
+
+    // Máx. hoje
+    birthInput.max = new Date().toISOString().split('T')[0];
+
+    function showLogin(){
+      tabLogin.classList.add('active');
+      tabRegister.classList.remove('active');
+      loginView.style.display = 'block';
+      registerView.style.display = 'none';
+    }
+    function showRegister(){
+      tabRegister.classList.add('active');
+      tabLogin.classList.remove('active');
+      registerView.style.display = 'block';
+      loginView.style.display = 'none';
+    }
+    tabLogin.addEventListener('click', showLogin);
+    tabRegister.addEventListener('click', showRegister);
+    toRegister.addEventListener('click', showRegister);
+    toLogin.addEventListener('click', showLogin);
+
+    // Preview de foto
+    photoInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      photoPreview.innerHTML = '';
+      if (!file) return;
+      if (!['image/jpeg','image/png'].includes(file.type) || file.size > 2*1024*1024) {
+        alert('Foto deve ser JPG ou PNG e até 2 MB.');
+        e.target.value = '';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        photoPreview.innerHTML = `<img src="${reader.result}" alt="Prévia" style="max-width:80px;border-radius:50%;box-shadow:0 4px 10px rgba(0,0,0,0.1)"/>`;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Cadastro
+    registerForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const name  = document.getElementById('reg-name').value.trim();
+      const birth = birthInput.value;
+      const email = document.getElementById('reg-email').value.trim().toLowerCase();
+      const pass  = document.getElementById('reg-password').value;
+      const file  = photoInput.files[0];
+      const reader = new FileReader();
+      reader.onerror = () => alert('Erro ao ler a foto.');
+      reader.onload = () => {
+        const user = { name, birth, email, pass, photo: reader.result };
+        localStorage.setItem('namoroAppUser', JSON.stringify(user));
+        const perfil = {
+          foto: reader.result,
+          nome: name,
+          idade: new Date().getFullYear() - new Date(birth).getFullYear(),
+          cidade: '',
+          bio: ''
+        };
+        localStorage.setItem('meuPerfil', JSON.stringify(perfil));
+        alert('Cadastro realizado com sucesso!');
+        window.location.href = 'home.html';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Login
+    loginForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
+      const pass  = document.getElementById('login-password').value;
+      const stored = localStorage.getItem('namoroAppUser');
+      if (!stored) { alert('Nenhum usuário cadastrado.'); return; }
+      const user = JSON.parse(stored);
+      if (user.email !== email) { alert('E‑mail não encontrado.'); return; }
+      if (user.pass !== pass) { alert('Senha incorreta.'); return; }
+      alert(`Bem‑vindo, ${user.name}!`);
+      window.location.href = 'home.html';
+    });
+  </script>
+</body>
+</html>

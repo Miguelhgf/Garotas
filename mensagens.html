@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mensagens • Namoro App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Poppins',sans-serif;
+      background: linear-gradient(135deg,#ff6ec4,#7873f5);
+      color:#222;
+      display:flex; flex-direction:column;
+      height:100vh;
+    }
+    .container {
+      max-width:400px; margin:0 auto;
+      padding:16px; display:flex;
+      flex-direction:column; height:100%;
+      position:relative;
+    }
+    header {
+      display:flex; align-items:center;
+      justify-content:space-between;
+      background:rgba(255,255,255,0.15);
+      backdrop-filter:blur(8px);
+      padding:12px 16px; border-radius:8px;
+      color:#fff;
+    }
+    .back-btn, .view-all-btn {
+      background:rgba(255,255,255,0.3);
+      border:none; border-radius:50%;
+      width:36px; height:36px;
+      display:flex; align-items:center;
+      justify-content:center;
+      cursor:pointer; transition:background .2s;
+    }
+    .back-btn:hover, .view-all-btn:hover {
+      background:rgba(255,255,255,0.5);
+    }
+    .back-btn span, .view-all-btn span {
+      font-size:1.2rem; color:#fff;
+    }
+    .header-title { font-size:1.3rem; font-weight:600; }
+    #msgContainer {
+      flex:1; overflow-y:auto;
+      margin-top:16px;
+      display:flex; flex-direction:column;
+      gap:12px;
+    }
+    .msg-card {
+      background:rgba(255,255,255,0.9);
+      border-radius:12px; padding:12px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+      display:flex; align-items:center;
+      gap:12px; cursor:pointer;
+      transition:transform .2s,box-shadow .2s;
+    }
+    .msg-card:hover {
+      transform:translateY(-2px);
+      box-shadow:0 6px 16px rgba(0,0,0,0.15);
+    }
+    .msg-card img {
+      width:48px; height:48px;
+      border-radius:50%; border:2px solid #fff;
+    }
+    .msg-content { display:flex; flex-direction:column; }
+    .msg-nome { font-weight:600; color:#6a1b9a; }
+    .msg-text { font-size:.95rem; color:#333; }
+    #chatPane {
+      flex:1; display:none; flex-direction:column;
+    }
+    .chat-header {
+      display:flex; align-items:center; gap:12px;
+      background:rgba(255,255,255,0.15);
+      backdrop-filter:blur(8px);
+      padding:12px; border-radius:8px; margin-top:16px;
+    }
+    .chat-header .back-btn {
+      background:rgba(255,255,255,0.3);
+    }
+    .chat-header img {
+      width:40px; height:40px;
+      border-radius:50%; border:2px solid #fff;
+      cursor:pointer;
+    }
+    .chat-header .nome {
+      font-weight:500; color:#6a1b9a; font-size:1rem;
+    }
+    .chat-messages {
+      flex:2; overflow-y:auto;
+      padding:8px; display:flex;
+      flex-direction:column; gap:8px;
+    }
+    .message {
+      max-width:70%; padding:8px 12px;
+      border-radius:12px; line-height:1.3;
+      word-wrap:break-word;
+    }
+    .incoming {
+      align-self:flex-start;
+      background:#fff; color:#333;
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    }
+    .outgoing {
+      align-self:flex-end;
+      background:#6a1b9a; color:#fff;
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    }
+    .typing {
+      font-style:italic;
+      color:#7c4dff;
+      background:none !important;
+      box-shadow:none !important;
+      opacity:.8;
+    }
+    .input-area {
+      display:flex; padding:8px;
+      background:rgba(255,255,255,0.2);
+      backdrop-filter:blur(8px);
+      gap:8px;
+    }
+    .input-area input {
+      flex:1; padding:8px 12px;
+      border:none; border-radius:20px;
+      font-size:1rem;
+    }
+    .input-area button {
+      padding:0 16px; border:none;
+      border-radius:20px;
+      background:#6a1b9a; color:#fff;
+      font-weight:500; cursor:pointer;
+      transition:opacity .2s;
+    }
+    .input-area button:disabled {
+      opacity:.5; cursor:not-allowed;
+    }
+    #profile-modal {
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(4px);
+      align-items:center; justify-content:center;
+      z-index:20;
+    }
+    #profile-modal .modal-content {
+      position:relative;
+      background:#fff;
+      border-radius:12px;
+      padding:16px 12px 24px;
+      max-width:280px; width:80%;
+      box-shadow:0 8px 24px rgba(0,0,0,0.2);
+      text-align:center;
+    }
+    #profile-modal .close-modal {
+      position:absolute; top:8px; right:8px;
+      font-size:1.4rem; color:#666;
+      cursor:pointer; transition:color .2s;
+    }
+    #profile-modal .close-modal:hover {
+      color:#333;
+    }
+    #profile-modal .photo-viewer {
+      margin-top:8px; margin-bottom:12px;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    #profile-modal .photo-viewer img {
+      width:90%;
+      height:auto;
+      border-radius:8px;
+      transition:opacity 0.3s;
+    }
+    #profile-modal .arrow-btn {
+      background:rgba(106,27,154,0.07);
+      border:none;
+      border-radius:50%;
+      width:34px;
+      height:34px;
+      font-size:1.4rem;
+      color:#6a1b9a;
+      cursor:pointer;
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      z-index:2;
+      transition:background .2s;
+    }
+    #profile-modal .arrow-btn:hover {
+      background:rgba(106,27,154,0.25);
+    }
+    #profile-modal .arrow-left  { left: 0; }
+    #profile-modal .arrow-right { right:0; }
+    #profile-modal .dots {
+      display:flex; justify-content:center; gap:6px;
+    }
+    #profile-modal .dot {
+      width:8px; height:8px;
+      border-radius:50%; background:#ccc;
+      cursor:pointer; transition:background .2s;
+    }
+    #profile-modal .dot.active {
+      background:#6a1b9a;
+    }
+    .modal {
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(4px);
+      align-items:center; justify-content:center;
+      z-index:30;
+    }
+    .modal-content {
+      background:linear-gradient(135deg,#6a1b9a,#4a148c);
+      color:#fff; padding:24px;
+      border-radius:12px; position:relative;
+      max-width:320px; margin:auto;
+      text-align:center;
+    }
+    .modal-content .close-modal {
+      position:absolute; top:8px; right:12px;
+      font-size:1.2rem; cursor:pointer;
+    }
+    .modal-content .pix-chave {
+      font-family:monospace;
+      background:rgba(255,255,255,0.2);
+      color:#fff; padding:8px 12px;
+      border-radius:6px; display:inline-block;
+      margin:12px 0; user-select:all;
+      font-size:1.02rem;
+    }
+    .modal-content .copy-btn {
+      padding:8px 16px; border:none;
+      border-radius:6px; background:#fff;
+      color:#6a1b9a; font-weight:500;
+      cursor:pointer; transition:background .2s;
+      margin-bottom:8px;
+    }
+    .modal-content .copy-btn:hover {
+      background:#f0f0f0;
+    }
+    .modal-content .pix-info {
+      margin:10px 0 6px 0;
+      font-size:.97rem;
+      color:#e0e0e0;
+    }
+    .modal-content strong {
+      color:#ffe082;
+    }
+    @media(max-width:480px){
+      header{padding:10px;}
+      .header-title{font-size:1.1rem;}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <button class="back-btn" onclick="window.location.href='match.html'"><span>←</span></button>
+      <div class="header-title">Mensagens</div>
+      <button class="view-all-btn" id="viewAll"><span>≡</span></button>
+    </header>
+    <div id="msgContainer"></div>
+    <div id="chatPane">
+      <div class="chat-header">
+        <button class="back-btn" onclick="showList()"><span>←</span></button>
+        <img id="chatAvatar" src="" alt="Avatar" onclick="openProfile()">
+        <div class="nome" id="chatName">Usuária</div>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="input-area">
+        <input id="chatInput" placeholder="Digite sua mensagem…" autocomplete="off">
+        <button id="chatSend">Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div id="profile-modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('profile-modal')">×</span>
+      <div class="photo-viewer">
+        <button class="arrow-btn arrow-left" onclick="prevPhoto(event)">‹</button>
+        <img id="profile-photo" src="" alt="Foto Perfil">
+        <button class="arrow-btn arrow-right" onclick="nextPhoto(event)">›</button>
+      </div>
+      <div class="dots">
+        <span class="dot active" data-index="0"></span>
+        <span class="dot" data-index="1"></span>
+        <span class="dot" data-index="2"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscription Modal -->
+  <div id="sub-modal" class="modal">
+    <div class="modal-content" id="modal-content">
+      <div class="close-modal" onclick="closeModal('sub-modal')">×</div>
+      <h2>Assinatura Necessária</h2>
+      <div class="pix-info">Para continuar conversando ilimitado, ative sua assinatura. Você receberá acesso VIP, respostas instantâneas e fotos exclusivas.<br><br>
+        <strong>R$ 21,90/mês</strong></div>
+      <div class="pix-chave" id="pix-chave">00.000.000/0001-00</div>
+      <button class="copy-btn" onclick="copyPix()">Copiar PIX</button>
+      <div style="font-size:0.92rem;opacity:0.7;margin-top:6px;">Após o pagamento, envie o comprovante para liberação!</div>
+    </div>
+  </div>
+
+  <script>
+    // NÃO apaga nada do localStorage! Tudo permanece salvo
+    let bloqueouTudo = localStorage.getItem('bloqueouTudo') === 'true';
+    let zapNovaEnviado = localStorage.getItem('zapNovaEnviado') === 'true';
+    let jaMostrouZapMsg = localStorage.getItem('jaMostrouZapMsg') === 'true';
+    let novaEtapa = Number(localStorage.getItem('novaEtapa')) || 0;
+
+    // Nome trocado de Nova para Aline
+    const perfis = {
+      Aline:  { avatar:'imagens/perfil/linda.jpg',  fotos:['imagens/perfil/linda1.jpg','imagens/perfil/linda2.jpg','imagens/perfil/linda3.jpg'] },
+      Ana:   { avatar:'imagens/perfil/minacelular.jpg', fotos:['imagens/perfil/minacelular.jpg'] },
+      Elisa: { avatar:'imagens/perfil/morrena.jpg',      fotos:['imagens/perfil/morrena.jpg'] },
+      Beatriz:{ avatar:'imagens/perfil/beatriz.jpg',    fotos:['imagens/perfil/beatriz1.jpg'] }
+    };
+
+    const msgContainer  = document.getElementById('msgContainer'),
+          chatPane      = document.getElementById('chatPane'),
+          chatAvatar    = document.getElementById('chatAvatar'),
+          chatName      = document.getElementById('chatName'),
+          chatMessages  = document.getElementById('chatMessages'),
+          chatInput     = document.getElementById('chatInput'),
+          chatSend      = document.getElementById('chatSend');
+
+    let active = null, photoIdx = 0;
+    let aguardaZapNova = false;
+
+    function addProfile(nome, text='Iniciar chat') {
+      if (msgContainer.querySelector(`[data-nome="${nome}"]`)) return;
+      const card=document.createElement('div');
+      card.className='msg-card';
+      card.setAttribute('data-nome',nome);
+      card.innerHTML=`
+        <img src="${perfis[nome].avatar}" />
+        <div class="msg-content">
+          <div class="msg-nome">${nome}</div>
+          <div class="msg-text">${text}</div>
+        </div>`;
+      card.onclick=()=>showChat(nome);
+      msgContainer.appendChild(card);
+    }
+
+    function showList(){
+      chatPane.style.display='none';
+      msgContainer.style.display='flex';
+    }
+
+    function showChat(nome){
+      active=nome;
+      msgContainer.style.display='none';
+      chatPane.style.display='flex';
+      chatAvatar.src=perfis[nome].avatar;
+      chatName.innerText=nome;
+      loadHistory();
+      if(nome==='Aline'){
+        const key='history_'+nome;
+        const hist=JSON.parse(localStorage.getItem(key)||'[]');
+        if(!hist.length) {
+          addMessage('incoming','Oi gatinho, tudo bem?');
+          novaEtapa = 0;
+          localStorage.setItem('novaEtapa','0');
+        }
+      }
+      if(nome==='Ana'){
+        const key='history_'+nome;
+        const hist=JSON.parse(localStorage.getItem(key)||'[]');
+        if(!hist.length) addMessage('incoming','Oi, tudo bem?');
+      }
+      if(nome==='Elisa'){
+        const key='history_'+nome;
+        const hist=JSON.parse(localStorage.getItem(key)||'[]');
+        if(!hist.length) addMessage('incoming','Oi, tudo bem?');
+      }
+      if(nome==='Beatriz'){
+        const key='history_'+nome;
+        const hist=JSON.parse(localStorage.getItem(key)||'[]');
+        if(!hist.length) addMessage('incoming','Oi bebê, gostei do seu perfil! Tem WhatsApp pra gente conversar?');
+      }
+      localStorage.setItem('activeChat',nome);
+    }
+
+    function addMessage(type,text){
+      const key='history_'+active;
+      const hist=JSON.parse(localStorage.getItem(key)||'[]');
+      hist.push({type,text});
+      localStorage.setItem(key,JSON.stringify(hist));
+      renderMessage(type,text);
+    }
+
+    function renderMessage(type,text){
+      const d=document.createElement('div');
+      d.className='message '+type;
+      d.innerText=text;
+      chatMessages.appendChild(d);
+      chatMessages.scrollTop=chatMessages.scrollHeight;
+    }
+
+    function renderTyping(){
+      const typing=document.createElement('div');
+      typing.className='message typing';
+      typing.innerText='Digitando...';
+      chatMessages.appendChild(typing);
+      chatMessages.scrollTop=chatMessages.scrollHeight;
+    }
+
+    function removeTyping(){
+      const t = chatMessages.querySelector('.typing');
+      if(t) t.remove();
+    }
+
+    function loadHistory(){
+      chatMessages.innerHTML='';
+      const key='history_'+active;
+      JSON.parse(localStorage.getItem(key)||'[]').forEach(m=>renderMessage(m.type,m.text));
+    }
+
+    chatSend.addEventListener('click',()=>{
+      const txt=chatInput.value.trim();
+      if(!txt||!active) return;
+      const key='history_'+active;
+      const hist=JSON.parse(localStorage.getItem(key)||'[]');
+      const outCount=hist.filter(m=>m.type==='outgoing').length;
+      const conversouComAline = JSON.parse(localStorage.getItem('history_Aline') || '[]').some(m => m.type === 'outgoing');
+
+      if(bloqueouTudo && (active==='Ana'||active==='Elisa'||active==='Beatriz'||active==='Aline')){
+        if(active==='Aline' && !jaMostrouZapMsg && !zapNovaEnviado && aguardaZapNova) {
+          // Espera fechar modal!
+        } else {
+          document.getElementById('sub-modal').style.display='flex';
+        }
+        return;
+      }
+
+      if(active==='Aline'){
+        if(outCount===0 && novaEtapa===0){
+          addMessage('outgoing',txt);
+          chatInput.value='';
+          setTimeout(()=>{
+            renderTyping();
+            setTimeout(()=>{
+              removeTyping();
+              addMessage('incoming','Nossa, queria fazer um amor gostoso 😏');
+              novaEtapa = 1;
+              localStorage.setItem('novaEtapa','1');
+            },4000);
+          },4000);
+          return;
+        }
+        else if(outCount===1 && novaEtapa===1){
+          document.getElementById('sub-modal').style.display='flex';
+          bloqueouTudo = true;
+          localStorage.setItem('bloqueouTudo','true');
+          novaEtapa = 2;
+          localStorage.setItem('novaEtapa','2');
+          aguardaZapNova = true;
+          setTimeout(()=>{
+            addProfile('Beatriz','Oi Gatinho , gostei do seu perfil! Tem WhatsApp pra gente conversar?');
+          },2000);
+          return;
+        }
+        else if(outCount===1 && novaEtapa===2 && !jaMostrouZapMsg && aguardaZapNova){
+          document.getElementById('sub-modal').style.display='flex';
+          return;
+        }
+        else if(outCount>=1 && novaEtapa===2 && (jaMostrouZapMsg||zapNovaEnviado)){
+          document.getElementById('sub-modal').style.display='flex';
+          return;
+        }
+      }
+
+      if(active==='Ana' || active==='Elisa'){
+        addMessage('outgoing',txt);
+        chatInput.value='';
+        return;
+      }
+
+      if(active==='Beatriz'){
+        document.getElementById('sub-modal').style.display='flex';
+        return;
+      }
+    });
+
+    document.getElementById('sub-modal').addEventListener('click', function(e){
+      if(e.target === this){
+        closeModal('sub-modal');
+      }
+    });
+    function closeModal(id){
+      document.getElementById(id).style.display='none';
+      if(id==='sub-modal' && active==='Aline' && bloqueouTudo && !jaMostrouZapMsg && aguardaZapNova){
+        setTimeout(()=>{
+          renderTyping();
+          setTimeout(()=>{
+            removeTyping();
+            addMessage('incoming','Qual teu zap melhor para conversar, BB?');
+            jaMostrouZapMsg = true;
+            zapNovaEnviado = true;
+            localStorage.setItem('jaMostrouZapMsg','true');
+            localStorage.setItem('zapNovaEnviado','true');
+          },4000);
+        },500);
+        aguardaZapNova = false;
+      }
+    }
+
+    function updateDots(){
+      document.querySelectorAll('#profile-modal .dot')
+        .forEach(dot=>dot.classList.toggle('active',+dot.dataset.index===photoIdx));
+    }
+    document.querySelectorAll('#profile-modal .dot').forEach(dot=>{
+      dot.addEventListener('click',()=>{
+        photoIdx=+dot.dataset.index;
+        updateProfilePhoto();
+        updateDots();
+      });
+    });
+
+    function prevPhoto(e){
+      e.stopPropagation();
+      const fotos = perfis[active].fotos;
+      photoIdx = (photoIdx - 1 + fotos.length) % fotos.length;
+      updateProfilePhoto();
+      updateDots();
+    }
+    function nextPhoto(e){
+      e.stopPropagation();
+      const fotos = perfis[active].fotos;
+      photoIdx = (photoIdx + 1) % fotos.length;
+      updateProfilePhoto();
+      updateDots();
+    }
+    function updateProfilePhoto(){
+      document.getElementById('profile-photo').style.opacity = 0.2;
+      setTimeout(()=>{
+        document.getElementById('profile-photo').src=perfis[active].fotos[photoIdx];
+        document.getElementById('profile-photo').style.opacity = 1;
+      },100);
+    }
+    function openProfile(){
+      photoIdx=0;
+      updateProfilePhoto();
+      updateDots();
+      document.getElementById('profile-modal').style.display='flex';
+    }
+    document.getElementById('profile-modal')
+      .addEventListener('click',e=>{
+        if(e.target.id==='profile-modal') closeModal('profile-modal');
+      });
+
+    document.addEventListener('DOMContentLoaded',()=>{
+      addProfile('Aline','Oi gatinho, tudo bem?');
+      addProfile('Ana','Oi BB , está solteiro?');
+      addProfile('Elisa','Oi, tudo bem?');
+      if(localStorage.getItem('bloqueouTudo')==='true'){
+        bloqueouTudo = true;
+        addProfile('Beatriz','Oi bebê, gostei do seu perfil! Tem WhatsApp pra gente conversar?');
+        novaEtapa = Number(localStorage.getItem('novaEtapa'))||2;
+        zapNovaEnviado = localStorage.getItem('zapNovaEnviado')==='true';
+        jaMostrouZapMsg = localStorage.getItem('jaMostrouZapMsg')==='true';
+      }
+      const ac=localStorage.getItem('activeChat');
+      if(ac) showChat(ac);
+    });
+
+    document.getElementById('viewAll').addEventListener('click',showList);
+
+    function copyPix(){
+      const chave=document.getElementById('pix-chave').innerText;
+      navigator.clipboard.writeText(chave)
+        .then(()=>alert('Chave PIX copiada!'))
+        .catch(()=>alert('Falha ao copiar o PIX.'));
+    }
+  </script>
+</body>
+</html>

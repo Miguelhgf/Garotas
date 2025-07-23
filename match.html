@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meus Matches - Namoro App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Poppins',sans-serif;
+      background: linear-gradient(135deg, #ff6ec4, #7873f5);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      padding: 20px;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+    .match-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .match-card {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(6px);
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      margin-bottom: 16px;
+      transition: transform .2s;
+    }
+    .match-card:hover { transform: scale(1.02); }
+    .match-photo {
+      width:60px; height:60px;
+      border-radius:50%;
+      object-fit:cover;
+      border:3px solid #6a1b9a;
+      margin-right:15px;
+      cursor:pointer;
+    }
+    .match-info h3 {
+      margin:0; font-size:18px; color:#6a1b9a;
+    }
+    .match-info p {
+      margin:4px 0 0; font-size:13px; color:#444;
+    }
+    .chat-button {
+      margin-left:auto;
+      background:#6a1b9a;
+      border:none;
+      color:#fff;
+      padding:10px 14px;
+      border-radius:8px;
+      cursor:pointer;
+      transition:background .2s;
+    }
+    .chat-button:hover { background:#4a148c; }
+    nav {
+      display:flex;
+      justify-content:space-around;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      padding:12px 0;
+    }
+    nav a {
+      text-decoration:none;
+      color:#fff;
+      font-weight:500;
+      font-size:0.9rem;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+    nav a span {
+      font-size:1.4rem;
+      margin-bottom:4px;
+    }
+    @media(max-width:480px){
+      header { font-size:1.2rem; padding:16px; }
+      .match-info h3 { font-size:1rem; }
+      .match-info p  { font-size:0.8rem; }
+      .chat-button { padding:8px 12px; font-size:13px; }
+      nav a span { font-size:1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>💘 Meus Matches</header>
+
+  <div class="match-container">
+    <!-- Apenas Ana e Elisa -->
+    <div class="match-card" id="card-Ana">
+      <img src="imagens/perfil/minacelular.jpg" class="match-photo" alt="Ana">
+      <div class="match-info">
+        <h3>Ana, 24</h3>
+        <p>Oi! Adorei sua bio 😄</p>
+      </div>
+      <button class="chat-button" onclick="salvarConversa('Ana','Oi! Adorei sua bio 😄')">Conversar</button>
+    </div>
+
+    <div class="match-card" id="card-Elisa">
+      <img src="imagens/perfil/morrena.jpg" class="match-photo" alt="Elisa">
+      <div class="match-info">
+        <h3>Elisa, 29</h3>
+        <p>Encontros com homens mais velhos amo 😈</p>
+      </div>
+      <button class="chat-button" onclick="salvarConversa('Elisa','Encontros com homens mais velhos amo 😈')">Conversar</button>
+    </div>
+  </div>
+
+  <nav>
+    <a href="perfil.html"><span>👤</span>Perfil</a>
+    <a href="match.html"><span>💘</span>Match</a>
+    <a href="mensagens.html"><span>💬</span>Mensagens</a>
+  </nav>
+
+  <script>
+    function salvarConversa(nome, mensagem) {
+      // 1) mantém lista de chats
+      let chats = JSON.parse(localStorage.getItem('chats'))||[];
+      if (!chats.includes(nome)) {
+        chats.push(nome);
+        localStorage.setItem('chats', JSON.stringify(chats));
+      }
+      // 2) histórico inicial de mensagem
+      let conv = JSON.parse(localStorage.getItem('conversas'))||[];
+      if (!conv.some(c => c.nome===nome)) {
+        conv.push({ nome, mensagem });
+        localStorage.setItem('conversas', JSON.stringify(conv));
+      }
+      // 3) define chat ativo e vai para mensagens
+      localStorage.setItem('activeChat', nome);
+      window.location.href = 'mensagens.html';
+    }
+  </script>
+
+</body>
+</html>
