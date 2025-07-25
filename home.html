@@ -10,210 +10,101 @@
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #ff6ec4, #7873f5);
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      color: #222;
+      display: flex; flex-direction: column; height:100vh; color:#222;
     }
     header {
-      text-align: center;
-      padding: 20px;
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: white;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(8px);
+      text-align:center; padding:20px; font-size:1.4rem; font-weight:600;
+      color:#fff; background:rgba(255,255,255,0.15); backdrop-filter:blur(8px);
     }
     #perfil-container {
-      flex: 1;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      flex:1; position:relative; display:flex;
+      align-items:center; justify-content:center; padding:20px;
     }
     .card {
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(6px);
-      border-radius: 20px;
-      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-      width: 320px;
-      max-width: 90%;
-      text-align: center;
-      position: absolute;
-      transition: transform 0.5s ease, opacity 0.5s ease;
-      overflow: hidden;
+      background:rgba(255,255,255,0.85); backdrop-filter:blur(6px);
+      border-radius:20px; box-shadow:0 12px 24px rgba(0,0,0,0.15);
+      width:320px; max-width:90%; text-align:center; position:absolute;
+      transition:transform .5s ease,opacity .5s ease; overflow:hidden;
     }
-    .card img {
-      width: 100%;
-      height: auto;
-      max-height: 55vh;
-      object-fit: cover;
-    }
-    .card h2 {
-      margin: 16px 0 8px;
-      font-size: 1.3rem;
-      color: #6a1b9a;
-    }
-    .card p {
-      padding: 0 16px 16px;
-      font-size: 1rem;
-      line-height: 1.4;
-      color: #444;
-    }
+    .card img { width:100%; height:auto; max-height:55vh; object-fit:cover; }
+    .card h2 { margin:16px 0 8px; font-size:1.3rem; color:#6a1b9a; }
+    .card p { padding:0 16px 16px; font-size:1rem; line-height:1.4; color:#444; }
     .buttons {
-      display: flex;
-      justify-content: space-around;
-      padding: 16px;
-      background: rgba(255,255,255,0.2);
-      backdrop-filter: blur(8px);
+      display:flex; justify-content:space-around; padding:16px;
+      background:rgba(255,255,255,0.2); backdrop-filter:blur(8px);
     }
     .buttons button {
-      width: 64px;
-      height: 64px;
-      border: none;
-      border-radius: 50%;
-      font-size: 1.5rem;
-      color: white;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      width:64px; height:64px; border:none; border-radius:50%;
+      font-size:1.5rem; color:#fff; cursor:pointer;
+      transition:transform .2s,box-shadow .2s; box-shadow:0 4px 12px rgba(0,0,0,0.2);
     }
     .buttons button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+      transform:translateY(-3px); box-shadow:0 6px 16px rgba(0,0,0,0.25);
     }
-    .passar { background: #d81b60; }
-    .curtir { background: #6a1b9a; }
-
+    .passar { background:#d81b60; }
+    .curtir { background:#6a1b9a; }
     .nav-footer {
-      display: flex;
-      justify-content: space-around;
-      padding: 12px 0;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(8px);
+      display:flex; justify-content:space-around; padding:12px 0;
+      background:rgba(255,255,255,0.15); backdrop-filter:blur(8px);
     }
     .nav-footer a {
-      text-decoration: none;
-      color: white;
-      font-weight: 500;
-      font-size: 0.9rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      transition: color 0.2s;
+      text-decoration:none; color:#fff; font-weight:500; font-size:.9rem;
+      display:flex; flex-direction:column; align-items:center; position:relative;
+      transition:color .2s;
     }
-    .nav-footer a:hover { color: #f0f0f0; }
-    .nav-footer a span.icon {
-      font-size: 1.4rem;
-      margin-bottom: 4px;
-    }
+    .nav-footer a:hover { color:#f0f0f0; }
+    .nav-footer a span.icon { font-size:1.4rem; margin-bottom:4px; }
     .match-badge {
-      position: absolute;
-      top: 0; right: 0;
-      transform: translate(25%, -25%);
-      width: 24px; height: 24px;
-      background: #e91e63;
-      color: #fff;
-      border: 2px solid #fff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      box-shadow: 0 0 6px rgba(0,0,0,0.3);
-      z-index: 10;
+      position:absolute; top:0; right:0; transform:translate(25%,-25%);
+      width:24px; height:24px; background:#e91e63; color:#fff;
+      border:2px solid #fff; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:14px; box-shadow:0 0 6px rgba(0,0,0,0.3); z-index:10;
     }
     #notificacao {
-      display: none;
-      position: absolute;
-      top: 0; right: 0;
-      transform: translate(25%, -25%);
-      width: 24px; height: 24px;
-      background: #d32f2f;
-      color: #fff;
-      border: 2px solid #fff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: bold;
-      box-shadow: 0 0 6px rgba(0,0,0,0.3);
-      z-index: 10;
+      display:none; position:absolute; top:0; right:0;
+      transform:translate(25%,-25%);
+      width:24px; height:24px; background:#d32f2f; color:#fff;
+      border:2px solid #fff; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:12px; font-weight:bold; box-shadow:0 0 6px rgba(0,0,0,0.3);
+      z-index:10;
     }
     #plano-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(4px);
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(4px); align-items:center; justify-content:center;
+      z-index:10;
     }
     #plano-modal .modal-conteudo {
-      background: white;
-      border-radius: 16px;
-      padding: 30px 24px;
-      max-width: 320px;
-      width: 90%;
-      text-align: center;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.3);
-      position: relative;
+      background:#fff; border-radius:16px; padding:30px 24px;
+      max-width:320px; width:90%; text-align:center;
+      box-shadow:0 12px 28px rgba(0,0,0,0.3); position:relative;
     }
-    #plano-modal h2 {
-      margin: 0 0 16px;
-      font-size: 1.4rem;
-      color: #6a1b9a;
-    }
-    #plano-modal p {
-      margin: 0 0 24px;
-      font-size: 1rem;
-      color: #333;
-      line-height: 1.5;
-    }
+    #plano-modal h2 { margin:0 0 16px; font-size:1.4rem; color:#6a1b9a; }
+    #plano-modal p { margin:0 0 24px; font-size:1rem; color:#333; line-height:1.5; }
     #plano-modal .pix-chave {
-      font-family: monospace;
-      background: #f5f5f5;
-      padding: 10px;
-      border-radius: 6px;
-      user-select: all;
-      display: inline-block;
-      margin-bottom: 20px;
+      font-family:monospace; background:#f5f5f5; padding:10px;
+      border-radius:6px; user-select:all; display:inline-block;
+      margin-bottom:20px;
     }
     #plano-modal button {
-      padding: 12px 28px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      background: #6a1b9a;
-      color: white;
-      cursor: pointer;
-      transition: background 0.2s;
+      padding:12px 28px; border:none; border-radius:8px;
+      font-size:1rem; background:#6a1b9a; color:#fff; cursor:pointer;
+      transition:background .2s;
     }
-    #plano-modal button:hover {
-      background: #4a148c;
-    }
+    #plano-modal button:hover { background:#4a148c; }
     #plano-modal .close-modal {
-      position: absolute;
-      top: 12px; right: 16px;
-      font-size: 1.5rem;
-      color: #999;
-      cursor: pointer;
-      transition: color 0.2s;
+      position:absolute; top:12px; right:16px;
+      font-size:1.5rem; color:#999; cursor:pointer; transition:color .2s;
     }
-    #plano-modal .close-modal:hover {
-      color: #666;
-    }
-    @media (max-width: 480px) {
-      header { font-size:1.2rem; padding:16px; }
-      .card h2 { font-size:1.1rem; }
-      .card p  { font-size:0.9rem; }
-      .buttons button { width:56px; height:56px; font-size:1.25rem; }
-      .nav-footer a { font-size:0.8rem; }
-      .nav-footer a span.icon { font-size:1.2rem; }
+    #plano-modal .close-modal:hover { color:#666; }
+    @media(max-width:480px){
+      header{font-size:1.2rem;padding:16px}
+      .card h2{font-size:1.1rem}
+      .card p{font-size:.9rem}
+      .buttons button{width:56px;height:56px;font-size:1.25rem}
+      .nav-footer a{font-size:.8rem}
+      .nav-footer a span.icon{font-size:1.2rem}
     }
   </style>
 </head>
@@ -249,7 +140,7 @@
     <a href="match.html"><span class="icon">💘</span>Match</a>
     <a href="mensagens.html" id="mensagem-link">
       <span class="icon">💬</span>Mensagens
-      <div id="notificacao">1</div>
+      <div id="notificacao"></div>
     </a>
   </nav>
 
@@ -265,53 +156,53 @@
     }
 
     const perfis = [
-      { nome: "Ana, 24",    foto: "imagens/perfil/minacelular.jpg",    bio: "sexo só em motel ." },
-      { nome: "Camila, 18", foto: "imagens/perfil/morena.jpg",         bio: "Amante de homens fortes." },
-      { nome: "Juliana, 26",foto: "imagens/perfil/azul.jpg",           bio: "Curiosa por natureza…" },
-      { nome: "Bianca, 30", foto: "imagens/perfil/loira.jpg",          bio: "Cozinheira de coração…" },
-      { nome: "Carla, 28",  foto: "imagens/perfil/praia.jpg",          bio: "Dançarina nas horas vagas…" },
-      { nome: "Daniela, 23",foto: "imagens/perfil/neguinha.jpg",       bio: "Encontros anônimos sem apego 🤤" },
-      { nome: "Elisa, 29",  foto: "imagens/perfil/morrena.jpg",        bio: "Encontros com homens mais velhos amo 😈" },
-      { nome: "Fernanda,29",foto:"imagens/perfil/lista.jpg",           bio: "Viajante gastronômica…" },
-      { nome: "Gabriela, 24",foto:"imagens/perfil/ferro.jpg",          bio: "Maratonista de séries…" },
-      { nome: "Helena, 26", foto: "imagens/perfil/magra1.jpg",         bio: "Me curti se tiver bom papo 👍." },
-      { nome: "Ingrid, 29", foto: "imagens/perfil/negra1.jpg",         bio: "Solteira, gosto de lugares reservados 😏." },
-      { nome: "Larissa, 26",foto: "imagens/perfil/negra2.jpg",         bio: "Quero alguém carinhoso." },
-      { nome: "Marina, 19", foto: "imagens/perfil/japa.jpg",           bio:"Me chama para um drinck kkk." },
-      { nome: "Natália, 23",foto: "imagens/perfil/japa2.jpg",          bio:"Degustadora de bons papos." },
-      { nome: "Olívia, 23", foto: "imagens/perfil/negra3.jpg",         bio:"Tédio, quero sair da rotina 🤤." },
-      { nome: "Patrícia, 24",foto:"imagens/perfil/praia1.jpg",         bio:"Curto Bar, funk e sertanejo." },
-      { nome: "Queila, 25", foto: "imagens/perfil/praia2.jpg",         bio:"Se me curtir vem com um bom papo." },
-      { nome: "Rafaela, 26",foto: "imagens/perfil/iphone1.jpg",        bio:"Baladeiras de plantão…" },
-      { nome: "Sabrina, 27",foto: "imagens/perfil/iphone2.jpg",        bio:"Eu me acho gostosa e vc?." },
-      { nome: "Thais, 29",  foto: "imagens/perfil/branca.jpg",         bio:"Minha melhor decoração." },
-      { nome: "Vanessa, 30",foto: "imagens/perfil/rosa.jpg",           bio:"Professora de educação física." },
-      { nome: "Yasmin, 25", foto: "imagens/perfil/rosa2.jpg",          bio:"Encontro magia nas palavras." },
-      { nome: "Zoé, 25",    foto: "imagens/perfil/calcinha1.jpg",      bio:"Mergulhadora subaquática." }
+      { nome: "Ana, 24",    foto: "imagens/perfil/minacelular.jpg", bio: "sexo só em motel ." },
+      { nome: "Camila, 18", foto: "imagens/perfil/morena.jpg",      bio: "Amante de homens fortes." },
+      { nome: "Juliana, 26",foto: "imagens/perfil/azul.jpg",        bio: "Curiosa por natureza…" },
+      { nome: "Bianca, 30", foto: "imagens/perfil/loira.jpg",       bio: "Cozinheira de coração…" },
+      { nome: "Carla, 28",  foto: "imagens/perfil/praia.jpg",       bio: "Dançarina nas horas vagas…" },
+      { nome: "Daniela, 23",foto: "imagens/perfil/neguinha.jpg",    bio: "Encontros anônimos sem apego 🤤" },
+      { nome: "Elisa, 29",  foto: "imagens/perfil/morrena.jpg",     bio: "Encontros com homens mais velhos amo 😈" },
+      { nome: "Fernanda,29",foto: "imagens/perfil/lista.jpg",       bio: "Viajante gastronômica…" },
+      { nome: "Gabriela, 24",foto:"imagens/perfil/ferro.jpg",       bio: "Maratonista de séries…" },
+      { nome: "Helena, 26", foto: "imagens/perfil/magra1.jpg",      bio: "Me curti se tiver bom papo 👍." },
+      { nome: "Ingrid, 29", foto: "imagens/perfil/negra1.jpg",      bio: "Solteira, gosto de lugares reservados 😏." },
+      { nome: "Larissa, 26",foto: "imagens/perfil/negra2.jpg",      bio: "Quero alguém carinhoso." },
+      { nome: "Marina, 19", foto: "imagens/perfil/japa.jpg",        bio: "Me chama para um drinck kkk." },
+      { nome: "Natália,23",foto: "imagens/perfil/japa2.jpg",        bio: "Degustadora de bons papos." },
+      { nome: "Olívia, 23", foto: "imagens/perfil/negra3.jpg",      bio: "Tédio, quero sair da rotina 🤤." },
+      { nome: "Patrícia,24",foto: "imagens/perfil/praia1.jpg",      bio: "Curto Bar, funk e sertanejo." },
+      { nome: "Queila, 25", foto: "imagens/perfil/praia2.jpg",      bio: "Se me curtir vem com um bom papo." },
+      { nome: "Rafaela, 26",foto: "imagens/perfil/iphone1.jpg",     bio: "Baladeiras de plantão…" },
+      { nome: "Sabrina, 27",foto: "imagens/perfil/iphone2.jpg",     bio: "Eu me acho gostosa e vc?." },
+      { nome: "Thais, 29",  foto: "imagens/perfil/branca.jpg",      bio: "Minha melhor decoração." },
+      { nome: "Vanessa,30", foto: "imagens/perfil/rosa.jpg",        bio: "Professora de educação física." },
+      { nome: "Yasmin,25",  foto: "imagens/perfil/rosa2.jpg",       bio: "Encontro magia nas palavras." },
+      { nome: "Zoé, 25",    foto: "imagens/perfil/calcinha1.jpg",   bio: "Mergulhadora subaquática." }
     ];
 
     let atual = Number(localStorage.getItem('perfil_atual')) || 0;
     let curtidas = Number(localStorage.getItem('curtidas_qtd')) || 0;
     let bloqueioAtivo = localStorage.getItem('bloqueio_curtidas') === 'true';
 
-    const card = document.getElementById("perfil-card"),
-          modal = document.getElementById("plano-modal"),
-          pixChave = document.getElementById("pix-chave"),
-          msgBadge = document.getElementById("notificacao");
+    const card      = document.getElementById("perfil-card"),
+          modal     = document.getElementById("plano-modal"),
+          pixChave  = document.getElementById("pix-chave"),
+          msgBadge  = document.getElementById("notificacao");
 
     function mostrarPerfil() {
       const p = perfis[atual];
       card.style.opacity = "1";
       card.style.transform = "translateX(0)";
-      document.getElementById("foto-perfil").src = p.foto;
+      document.getElementById("foto-perfil").src       = p.foto;
       document.getElementById("nome-perfil").innerText = p.nome;
-      document.getElementById("bio-perfil").innerText = p.bio;
+      document.getElementById("bio-perfil").innerText  = p.bio;
       localStorage.setItem('perfil_atual', atual);
     }
 
     function animarDireita(cb) {
       card.style.transform = "translateX(400px)";
-      card.style.opacity = "0";
+      card.style.opacity   = "0";
       setTimeout(() => {
         atual = (atual + 1) % perfis.length;
         mostrarPerfil();
@@ -321,7 +212,7 @@
 
     function animarEsquerda(cb) {
       card.style.transform = "translateX(-400px)";
-      card.style.opacity = "0";
+      card.style.opacity   = "0";
       setTimeout(() => {
         atual = (atual + 1) % perfis.length;
         mostrarPerfil();
@@ -336,18 +227,21 @@
       }
       curtidas++;
       localStorage.setItem('curtidas_qtd', curtidas);
+
       const curtidosArr = JSON.parse(localStorage.getItem('curtidos')) || [];
       curtidosArr.push(perfis[atual]);
       localStorage.setItem('curtidos', JSON.stringify(curtidosArr));
 
+      // badge mensagem aos 4 curtidas
+      if (curtidas === 4) {
+        msgBadge.style.display = 'flex';
+        localStorage.setItem('notificacao_msg', 'true');
+      }
+
+      // badge match ao curtir Elisa depois de já ter curtido Ana
       const nomes = curtidosArr.map(p => p.nome.split(',')[0].trim());
       if (perfis[atual].nome.startsWith('Elisa') && nomes.includes('Ana')) {
         showMatchNotification();
-      }
-
-      // Agora a badge de mensagem aparece após 4 curtidas
-      if (curtidas === 4) {
-        msgBadge.style.display = 'flex';
       }
 
       if (curtidas >= 20) {
@@ -379,11 +273,11 @@
 
     window.onload = () => {
       mostrarPerfil();
-      setTimeout(() => {
-        if (msgBadge.style.display !== 'flex') {
-          msgBadge.style.display = 'flex';
-        }
-      }, 35000);
+      if (localStorage.getItem('notificacao_msg') === 'true') {
+        msgBadge.style.display = 'flex';
+      } else {
+        msgBadge.style.display = 'none';
+      }
     };
   </script>
 </body>
