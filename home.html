@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* ...todo seu CSS permanece igual... */
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family: 'Poppins', sans-serif;
@@ -291,30 +290,28 @@
       { nome: "Zoé, 25",    foto: "imagens/perfil/calcinha1.jpg",      bio:"Mergulhadora subaquática." }
     ];
 
-    // Recupera progresso salvo
     let atual = Number(localStorage.getItem('perfil_atual')) || 0;
     let curtidas = Number(localStorage.getItem('curtidas_qtd')) || 0;
     let bloqueioAtivo = localStorage.getItem('bloqueio_curtidas') === 'true';
 
-    const card      = document.getElementById("perfil-card"),
-          modal     = document.getElementById("plano-modal"),
-          pixChave  = document.getElementById("pix-chave"),
-          msgBadge  = document.getElementById("notificacao");
+    const card = document.getElementById("perfil-card"),
+          modal = document.getElementById("plano-modal"),
+          pixChave = document.getElementById("pix-chave"),
+          msgBadge = document.getElementById("notificacao");
 
     function mostrarPerfil() {
       const p = perfis[atual];
-      card.style.opacity   = "1";
+      card.style.opacity = "1";
       card.style.transform = "translateX(0)";
-      document.getElementById("foto-perfil").src       = p.foto;
+      document.getElementById("foto-perfil").src = p.foto;
       document.getElementById("nome-perfil").innerText = p.nome;
-      document.getElementById("bio-perfil").innerText  = p.bio;
-      // Salva o progresso do perfil exibido
+      document.getElementById("bio-perfil").innerText = p.bio;
       localStorage.setItem('perfil_atual', atual);
     }
 
     function animarDireita(cb) {
       card.style.transform = "translateX(400px)";
-      card.style.opacity   = "0";
+      card.style.opacity = "0";
       setTimeout(() => {
         atual = (atual + 1) % perfis.length;
         mostrarPerfil();
@@ -324,7 +321,7 @@
 
     function animarEsquerda(cb) {
       card.style.transform = "translateX(-400px)";
-      card.style.opacity   = "0";
+      card.style.opacity = "0";
       setTimeout(() => {
         atual = (atual + 1) % perfis.length;
         mostrarPerfil();
@@ -339,18 +336,17 @@
       }
       curtidas++;
       localStorage.setItem('curtidas_qtd', curtidas);
-      // salva curtidas
       const curtidosArr = JSON.parse(localStorage.getItem('curtidos')) || [];
       curtidosArr.push(perfis[atual]);
       localStorage.setItem('curtidos', JSON.stringify(curtidosArr));
 
       const nomes = curtidosArr.map(p => p.nome.split(',')[0].trim());
-      // apenas quando curtir Elisa E já tiver curtido Ana
       if (perfis[atual].nome.startsWith('Elisa') && nomes.includes('Ana')) {
         showMatchNotification();
       }
-      // badge de mensagem após 8 curtidas
-      if (curtidas === 8) {
+
+      // Agora a badge de mensagem aparece após 4 curtidas
+      if (curtidas === 4) {
         msgBadge.style.display = 'flex';
       }
 
@@ -383,7 +379,6 @@
 
     window.onload = () => {
       mostrarPerfil();
-      // badge de mensagem após 30s, se ainda não apareceu
       setTimeout(() => {
         if (msgBadge.style.display !== 'flex') {
           msgBadge.style.display = 'flex';
@@ -391,6 +386,5 @@
       }, 35000);
     };
   </script>
-
 </body>
 </html>
